@@ -10,6 +10,7 @@ public class Movement2D : MonoBehaviour
     [SerializeField] float currentHorizontalSpeed;
     [SerializeField] float currentVerticalSpeed;
     [SerializeField] Transform spriteBody;
+    [SerializeField] FoodManager foodManager;
 
     [SerializeField] Movement2D.MovingType movingType;
     [Header("Speed Values")]
@@ -57,21 +58,26 @@ public class Movement2D : MonoBehaviour
     }
     private void Update()
     {
-        if (movingType == MovingType.TopDown)
+        if (!foodManager.isCooking)
         {
-            GetTopDownInput();
-            UpdateTopDownSpeed();
-            MoveTopDownPlayer();
-            FlipThePlayer();
+            if (movingType == MovingType.TopDown)
+            {
+                GetTopDownInput();
+                UpdateTopDownSpeed();
+                MoveTopDownPlayer();
+                FlipThePlayer();
+            }
+            else if (movingType == MovingType.Platformer)
+            {
+                CheckGround();
+                GetPlatformerInput();
+                UpdatePlatformerSpeed();
+                MoveTopDownPlayer();
+                FlipThePlayer();
+            }
         }
-        else if (movingType == MovingType.Platformer)
-        {
-            CheckGround();
-            GetPlatformerInput();
-            UpdatePlatformerSpeed();
-            MoveTopDownPlayer();
-            FlipThePlayer();
-        }
+        else rb2.velocity = Vector2.zero;
+
 
     }
 

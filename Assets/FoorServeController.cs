@@ -20,7 +20,7 @@ public class FoorServeController : MonoBehaviour
     [SerializeField] Color discardColor;
     [SerializeField] FoodMenuManager.FoodList availableFood;
     [SerializeField] bool nearToKitchen;
-
+    [SerializeField] FoodManager foodManager;
     void CheckCircle()
     {
         Collider2D _collider = Physics2D.OverlapCircle(transform.position, circleRadius, checkLayers);
@@ -128,9 +128,10 @@ public class FoorServeController : MonoBehaviour
 
     void ServeTheCat()
     {
-        if (isCustomer)
+        if (isCustomer && selectedFood != FoodMenuManager.FoodList.None)
         {
             currentCat.FoodServed(selectedFood);
+            selectedFood = FoodMenuManager.FoodList.None;
         }
     }
 
@@ -148,6 +149,20 @@ public class FoorServeController : MonoBehaviour
         if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None)
         {
             selectedFood = availableFood;
+            switch ((int)selectedFood) 
+            {
+                case 1:
+                    foodManager.StartMakingSushi();
+                    break;
+                case 2:
+                    foodManager.StartMakingYS();
+                    break;
+                case 3:
+                    foodManager.StartMakingLazanya();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

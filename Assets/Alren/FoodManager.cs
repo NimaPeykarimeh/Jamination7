@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class FoodManager : MonoBehaviour
 {
     public bool isCooking = false;
-    private int cookingID = 2;
     [SerializeField] private GameObject foodCompletionMark;
 
     [Header("Sushi")]
@@ -50,6 +49,7 @@ public class FoodManager : MonoBehaviour
     [SerializeField] private List<GameObject> LazanyaKiymaMainPlate;
     private int borekIndex;
     private int kiymaIndex;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,12 +71,10 @@ public class FoodManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && cookingID == 0) StartMakingSushi();
-        else if (Input.GetKeyDown(KeyCode.E) && cookingID == 1) StartMakingYS();
-        else if (Input.GetKeyDown(KeyCode.E) && cookingID == 2) StartMakingLazanya();
+
     }
 
-    private void StartMakingSushi()
+    public void StartMakingSushi()
     {
         int N = sushiMainPlate.transform.childCount;
         sushiMainPlate.transform.GetChild(0).gameObject.SetActive(false);
@@ -84,16 +82,17 @@ public class FoodManager : MonoBehaviour
         isCooking = true;
         cookingPhase = 0;
     }
-    private void StartMakingYS()
+    public void StartMakingYS()
     {
         ysSliders[0].SetActive(true);
         ysPanel.SetActive(true);
         isCooking = true;
         cookingPhase = 0;
     }
-    private void StartMakingLazanya()
+    public void StartMakingLazanya()
     {
         LazanyaPanel.SetActive(true);
+        isCooking = true;
     }
     public void SeaweedOnClick()
     {
@@ -169,7 +168,6 @@ public class FoodManager : MonoBehaviour
         }
         if (N == 3 && cookingPhase >= 3)
         {
-            isCooking = false;
             StartCoroutine(PopCompleted(1));
         }
     }
@@ -191,7 +189,6 @@ public class FoodManager : MonoBehaviour
             
             if (cookingPhase < 4)
             {
-                
                 ysSliders[cookingPhase].SetActive(true);
             }
 
@@ -220,7 +217,6 @@ public class FoodManager : MonoBehaviour
             sushiRiceWithSeaWeedMainPlate.GetComponent<Image>().sprite = sushiSprite4;
             sushiSlider.SetActive(false);
             StartCoroutine(PopCompleted(0));
-            isCooking = false;
         }
     }
 
@@ -235,6 +231,7 @@ public class FoodManager : MonoBehaviour
                 foodCompletionMark.SetActive(false);
                 sushiRiceWithSeaWeedMainPlate.SetActive(false);
                 sushiPanel.SetActive(false);
+                isCooking = false;
                 break;
             case 1:
                 foodCompletionMark.SetActive(true);
@@ -253,6 +250,7 @@ public class FoodManager : MonoBehaviour
                 ysLettuceMainPlate.GetComponent<Image>().sprite = ysLettuceSprites[0];
                 ysLettuceMainPlate.SetActive(false);
                 ysPanel.SetActive(false);
+                isCooking = false;
                 break;
             case 2:
                 foodCompletionMark.SetActive(true);
@@ -266,6 +264,8 @@ public class FoodManager : MonoBehaviour
                 {
                     borek.SetActive(false);
                 }
+                LazanyaPanel.SetActive(false);
+                isCooking = false;
                 break;
         } 
 
