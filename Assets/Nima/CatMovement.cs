@@ -74,11 +74,12 @@ public class CatMovement : MonoBehaviour
             print(currentTableManager.gameObject.name);
             isTableAvailable = true;
             tableWayPointCount = currentTableManager.wayPointParent.childCount - 1;
-            tableWayPointIndex = tableWayPointCount;
+            tableWayPointIndex = tableWayPointCount - 1;
             foreach (Transform _point in currentTableManager.wayPointParent)
             {
                 tableWayPoints.Add(_point);
             }
+            patienceBar.gameObject.SetActive(false);
             currentState = CatStages.MovingToTable;
         }
     }
@@ -89,25 +90,39 @@ public class CatMovement : MonoBehaviour
         {
             movingDirection = (targetQueueTransform.position - transform.position).normalized;
             rb2.velocity = movingDirection * movementSpeed;
-            if (Vector2.Distance(transform.position,targetQueueTransform.position) < 0.3f)
+            if (Vector2.Distance(transform.position, targetQueueTransform.position) < 0.3f)
             {
                 rb2.velocity = Vector2.zero;
                 currentState = CatStages.WaitingInQueue;
+                patienceBar.gameObject.SetActive(true);
+                waitingForTableTimer = waitingForTableDuration;
             }
         }
 
         if (currentState == CatStages.WaitingInQueue && queueManager.IsFirstInQueue(this))
         {
+            
+            
             currentState = CatStages.LookingForTable;
         }
 
+        if (currentState == CatStages.WaitingInQueue || currentState == CatStages.LookingForTable)
+        {
+            waitingForTableTimer -= Time.deltaTime;
+            float _ratio = waitingForTableTimer / waitingForTableDuration;
+            patienceBar.fillAmount = _ratio;
+        }
+
+
         if (currentState == CatStages.LookingForTable)
         {
+            
             GetATable();
         }
 
         if (currentState == CatStages.MovingToTable)
         {
+            
             movingDirection = (tableWayPoints[tableWayPointIndex].position - transform.position).normalized;
             rb2.velocity = movingDirection * movementSpeed;
             if (Vector2.Distance(transform.position, tableWayPoints[tableWayPointIndex].position) < 0.3f)
@@ -128,6 +143,27 @@ public class CatMovement : MonoBehaviour
             orderingTimer -= Time.deltaTime;
             float _ratio = orderingTimer / orderingDuration;
             patienceBar.fillAmount = _ratio;
+
+            if (orderingTimer <= 0)
+            {
+                currentState = CatStages.Exiting;
+                tableWayPointIndex = 0;
+                allTableManager.availableTables.Add(currentTableManager);
+            }
+        }
+
+        if (currentState == CatStages.Exiting)
+        {
+            movingDirection = (tableWayPoints[tableWayPointIndex].position - transform.position).normalized;
+            rb2.velocity = movingDirection * movementSpeed;
+            if (Vector2.Distance(transform.position, tableWayPoints[tableWayPointIndex].position) < 0.3f)
+            {
+                tableWayPointIndex++;
+                if (tableWayPointIndex > tableWayPointCount)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
         }
 
         //if (!isTableAvailable)
