@@ -93,6 +93,8 @@ public class FoodManager : MonoBehaviour
     {
         LazanyaPanel.SetActive(true);
         isCooking = true;
+        kiymaIndex = 0;
+        borekIndex = 0;
     }
     public void SeaweedOnClick()
     {
