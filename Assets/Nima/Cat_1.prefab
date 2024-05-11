@@ -275,6 +275,7 @@ GameObject:
   - component: {fileID: 3210475546556609608}
   - component: {fileID: 2968012320859989757}
   - component: {fileID: 4077934350026765068}
+  - component: {fileID: -3841258913188612373}
   m_Layer: 7
   m_Name: Cat_1
   m_TagString: Customer
@@ -418,6 +419,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-3841258913188612373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3021357871457203467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f573aa1b265327247ad66995921bee02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4861682244976265121
 GameObject:
   m_ObjectHideFlags: 0
