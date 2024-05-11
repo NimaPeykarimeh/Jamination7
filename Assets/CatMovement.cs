@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CatMovement : MonoBehaviour
 {
@@ -25,6 +26,16 @@ public class CatMovement : MonoBehaviour
     [SerializeField] List<Transform> tableWayPoints;
 
 
+    [Header("Patiente")]
+    [SerializeField] Image patienceBar;
+    [Header("Ordering")]
+    [SerializeField] float orderingDuration = 10f;
+    [SerializeField] float orderingTimer;
+
+
+    [Header("WaitingForTable")]
+    [SerializeField] float waitingForTableDuration = 10f;
+    [SerializeField] float waitingForTableTimer ;
 
     public enum CatStages
     {
@@ -43,6 +54,7 @@ public class CatMovement : MonoBehaviour
         queueManager = FindObjectOfType<QueueManager>();
         currentState = CatStages.Entering;
         targetQueueTransform = queueManager.AddToQueue(this);
+        patienceBar.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -103,11 +115,19 @@ public class CatMovement : MonoBehaviour
                 tableWayPointIndex--;
                 if (tableWayPointIndex < 0)
                 {
-
+                    orderingTimer = orderingDuration;
+                    patienceBar.gameObject.SetActive(true);
                     currentState = CatStages.WaitingForOrder;
                     rb2.velocity = Vector2.zero;
                 }
             }
+        }
+
+        if (currentState == CatStages.WaitingForOrder)
+        {
+            orderingTimer -= Time.deltaTime;
+            float _ratio = orderingTimer / orderingDuration;
+            patienceBar.fillAmount = _ratio;
         }
 
         //if (!isTableAvailable)
