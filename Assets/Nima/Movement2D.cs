@@ -9,6 +9,7 @@ public class Movement2D : MonoBehaviour
     Vector2 input;
     [SerializeField] float currentHorizontalSpeed;
     [SerializeField] float currentVerticalSpeed;
+    [SerializeField] Transform spriteBody;
 
     [SerializeField] Movement2D.MovingType movingType;
     [Header("Speed Values")]
@@ -169,11 +170,11 @@ public class Movement2D : MonoBehaviour
     {
         if (currentHorizontalSpeed > 0)
         {
-            transform.eulerAngles = new Vector3(0f,0f,0f);
+            spriteBody.eulerAngles = new Vector3(0f,0f,0f);
         }
         else if (currentHorizontalSpeed < 0)
         {
-            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+            spriteBody.eulerAngles = new Vector3(0f, 180f, 0f);
         }
     }
 

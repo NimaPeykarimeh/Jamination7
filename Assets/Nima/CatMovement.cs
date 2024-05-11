@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class CatMovement : MonoBehaviour
 {
+    Animator animator;
     Rigidbody2D rb2;
     QueueManager queueManager;
-    public Transform targetQueueTransform;
     Vector2 movingDirection;
+    FoodMenuManager foodMenuManager;
+    [SerializeField] Transform spriteBody;
 
+    public Transform targetQueueTransform;
     public bool firstInQueue;
     public CatStages currentState;
 
@@ -37,6 +42,12 @@ public class CatMovement : MonoBehaviour
     [SerializeField] float waitingForTableDuration = 10f;
     [SerializeField] float waitingForTableTimer ;
 
+    [Header("Eating")]
+    [SerializeField] FoodMenuManager.FoodList currentFood;
+    [SerializeField] float eatingDuration = 10f;
+    [SerializeField] float eatingTimer;
+    [SerializeField] TextMeshProUGUI foodOrderText;
+    [SerializeField] GameObject table;
     public enum CatStages
     {
         Entering,
@@ -55,6 +66,8 @@ public class CatMovement : MonoBehaviour
         currentState = CatStages.Entering;
         targetQueueTransform = queueManager.AddToQueue(this);
         patienceBar.gameObject.SetActive(false);
+        foodMenuManager = FindObjectOfType<FoodMenuManager>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -63,15 +76,23 @@ public class CatMovement : MonoBehaviour
         
     }
 
+    void FlipTheBody()
+    {
+        if (movingDirection.x > 0)
+        {
+            spriteBody.eulerAngles = new Vector3(0f, 0f, 0f);
+        }
+        else if (movingDirection.x < 0)
+        {
+            spriteBody.eulerAngles = new Vector3(0f, 180f, 0f);
+        }
+    }
 
     void GetATable()
     {
         allTableManager.GetRandomTable(this);
-        print(gameObject.name);
         if (currentTableManager != null ) 
         {
-            print(gameObject.name);
-            print(currentTableManager.gameObject.name);
             isTableAvailable = true;
             tableWayPointCount = currentTableManager.wayPointParent.childCount - 1;
             tableWayPointIndex = tableWayPointCount - 1;
@@ -84,8 +105,56 @@ public class CatMovement : MonoBehaviour
         }
     }
 
+    public void FoodServed(FoodMenuManager.FoodList _servedFood)
+    {
+        if (currentState == CatStages.WaitingForOrder)
+        {
+            if (_servedFood == currentFood)
+            {
+                currentState = CatStages.Eating;
+                foodOrderText.SetText("Eating...");
+                eatingTimer = eatingDuration;
+            }
+            else
+            {
+                print("WRONG FOOD");
+                ExitTheRestaurant(true);
+            }
+        }
+        else
+        {
+            print("NO NEED FOR FOOD");
+        }
+        
+    }
+
+    void OrderFood()
+    {
+        currentFood = foodMenuManager.GetRandomFood();
+        foodOrderText.SetText(currentFood.ToString());
+    }
+
+    void ExitTheRestaurant(bool _isAngry)
+    {
+        if (_isAngry) 
+        {
+            currentTableManager.gameObject.SetActive(false);
+            table.SetActive(true);
+        }
+        else
+        {
+            allTableManager.availableTables.Add(currentTableManager);
+        }
+        currentState = CatStages.Exiting;
+        tableWayPointIndex = 0;
+        patienceBar.gameObject.SetActive(false);
+        foodOrderText.SetText("");
+    }
+
     private void Update()
     {
+        animator.SetFloat("Dir_y",movingDirection.y);
+        FlipTheBody();
         if (currentState == CatStages.Entering)
         {
             movingDirection = (targetQueueTransform.position - transform.position).normalized;
@@ -134,6 +203,7 @@ public class CatMovement : MonoBehaviour
                     patienceBar.gameObject.SetActive(true);
                     currentState = CatStages.WaitingForOrder;
                     rb2.velocity = Vector2.zero;
+                    OrderFood();
                 }
             }
         }
@@ -146,9 +216,8 @@ public class CatMovement : MonoBehaviour
 
             if (orderingTimer <= 0)
             {
-                currentState = CatStages.Exiting;
-                tableWayPointIndex = 0;
-                allTableManager.availableTables.Add(currentTableManager);
+                ExitTheRestaurant(true);
+                
             }
         }
 
@@ -166,6 +235,16 @@ public class CatMovement : MonoBehaviour
             }
         }
 
+        if (currentState == CatStages.Eating)
+        {
+            eatingTimer -= Time.deltaTime;
+            float _ratio = eatingTimer / eatingDuration;
+            patienceBar.fillAmount = _ratio;
+            if (eatingTimer <= 0)
+            {
+                ExitTheRestaurant(false);
+            }
+        }
         //if (!isTableAvailable)
         //{
         //    GetATable();

@@ -42,7 +42,6 @@ public class QueueManager : MonoBehaviour
     {
         for (int i = 0; i < QueueList.Length - 1; i++)
         {
-            print(i);
             QueueList[i].catInQueue = QueueList[i + 1].catInQueue;
             if (QueueList[i].catInQueue != null)
             {
