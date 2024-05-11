@@ -41,6 +41,7 @@ public class Movement2D : MonoBehaviour
 
     [Space]
     [SerializeField] float dist;
+    
     public enum MovingType
     {
         TopDown,
@@ -48,6 +49,8 @@ public class Movement2D : MonoBehaviour
     }
     private void Awake()
     {
+
+
         rb2 = GetComponent<Rigidbody2D>();
         
     }
