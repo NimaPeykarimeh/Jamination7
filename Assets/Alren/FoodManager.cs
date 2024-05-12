@@ -49,6 +49,14 @@ public class FoodManager : MonoBehaviour
     [SerializeField] private List<GameObject> LazanyaKiymaMainPlate;
     private int borekIndex;
     private int kiymaIndex;
+    [Header("Audio")]
+    AudioSource audioSource;
+    [SerializeField] AudioClip ChoppingMarulSound;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -178,6 +186,7 @@ public class FoodManager : MonoBehaviour
         if(cookingPhase < 4)
         if (ysSliders[cookingPhase].GetComponent<Slider>().value == 100)
         {
+            
             ControlYSFinished();
             if(cookingPhase < 4)
             {
@@ -186,6 +195,7 @@ public class FoodManager : MonoBehaviour
             if (cookingPhase < 4) 
             {
                 ysLettuceMainPlate.GetComponent<Image>().sprite = ysLettuceSprites[cookingPhase + 1];
+                audioSource.PlayOneShot(ChoppingMarulSound);
                 cookingPhase++;
             }
             

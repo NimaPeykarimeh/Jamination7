@@ -13,10 +13,12 @@ public class CatMovement : MonoBehaviour
     Vector2 movingDirection;
     FoodMenuManager foodMenuManager;
     [SerializeField] Transform spriteBody;
+    [SerializeField] Transform tableBody;
 
     public Transform targetQueueTransform;
     public bool firstInQueue;
     public CatStages currentState;
+    bool isStealing = false;
 
     public TableManager currentTableManager;
     [SerializeField] AllTableManager allTableManager;
@@ -52,6 +54,7 @@ public class CatMovement : MonoBehaviour
     {
         Entering,
         WaitingInQueue,
+        MovingInQueue,
         LookingForTable,
         MovingToTable,
         WaitingForOrder,
@@ -73,7 +76,7 @@ public class CatMovement : MonoBehaviour
     private void Start()
     {
         allTableManager = FindObjectOfType<AllTableManager>();
-        
+        waitingForTableTimer = waitingForTableDuration;
     }
 
     void FlipTheBody()
@@ -81,10 +84,12 @@ public class CatMovement : MonoBehaviour
         if (movingDirection.x > 0)
         {
             spriteBody.eulerAngles = new Vector3(0f, 0f, 0f);
+            tableBody.eulerAngles = new Vector3(0f, 0f, 0f);
         }
         else if (movingDirection.x < 0)
         {
             spriteBody.eulerAngles = new Vector3(0f, 180f, 0f);
+            tableBody.eulerAngles = new Vector3(0f, 180f, 0f);
         }
     }
 
@@ -93,6 +98,25 @@ public class CatMovement : MonoBehaviour
         allTableManager.GetRandomTable(this);
         if (currentTableManager != null ) 
         {
+            isTableAvailable = true;
+            tableWayPointCount = currentTableManager.wayPointParent.childCount - 1;
+            tableWayPointIndex = tableWayPointCount - 1;
+            foreach (Transform _point in currentTableManager.wayPointParent)
+            {
+                tableWayPoints.Add(_point);
+            }
+            patienceBar.gameObject.SetActive(false);
+            currentState = CatStages.MovingToTable;
+        }
+    }
+
+    void StealATable()
+    {
+        allTableManager.StealRandomTable(this);
+        if (currentTableManager != null)
+        {
+            isStealing = true;
+            print(name);
             isTableAvailable = true;
             tableWayPointCount = currentTableManager.wayPointParent.childCount - 1;
             tableWayPointIndex = tableWayPointCount - 1;
@@ -138,12 +162,21 @@ public class CatMovement : MonoBehaviour
     {
         if (_isAngry) 
         {
-            currentTableManager.gameObject.SetActive(false);
-            table.SetActive(true);
+            if (!allTableManager.IsThisTableHasStolen(currentTableManager))
+            {
+                currentTableManager.gameObject.SetActive(false);
+                allTableManager.StealThisTable(currentTableManager);
+                animator.SetBool("IsCarryingTable", true);
+            }
+            
+            //allTableManager.tablesLeft.Remove(currentTableManager);
+            //table.SetActive(true);
+            
         }
         else
         {
-            allTableManager.availableTables.Add(currentTableManager);
+            allTableManager.ReturnThisTable(currentTableManager);
+            //allTableManager.availableTables.Add(currentTableManager);
         }
         currentState = CatStages.Exiting;
         tableWayPointIndex = 0;
@@ -180,8 +213,22 @@ public class CatMovement : MonoBehaviour
             waitingForTableTimer -= Time.deltaTime;
             float _ratio = waitingForTableTimer / waitingForTableDuration;
             patienceBar.fillAmount = _ratio;
-        }
 
+            if (waitingForTableTimer < 0)
+            {
+                StealATable();
+            }
+        }
+        if (currentState == CatStages.MovingInQueue)
+        {
+            movingDirection = (targetQueueTransform.position - transform.position).normalized;
+            rb2.velocity = movingDirection * movementSpeed;
+            if (Vector2.Distance(transform.position, targetQueueTransform.position) < 0.3f)
+            {
+                rb2.velocity = Vector2.zero;
+                currentState = CatStages.WaitingInQueue;
+            }
+        }
 
         if (currentState == CatStages.LookingForTable)
         {
@@ -199,11 +246,18 @@ public class CatMovement : MonoBehaviour
                 tableWayPointIndex--;
                 if (tableWayPointIndex < 0)
                 {
-                    orderingTimer = orderingDuration;
-                    patienceBar.gameObject.SetActive(true);
-                    currentState = CatStages.WaitingForOrder;
-                    rb2.velocity = Vector2.zero;
-                    OrderFood();
+                    if (isStealing)
+                    {
+                        ExitTheRestaurant(true);
+                    }
+                    else
+                    {
+                        orderingTimer = orderingDuration;
+                        patienceBar.gameObject.SetActive(true);
+                        currentState = CatStages.WaitingForOrder;
+                        rb2.velocity = Vector2.zero;
+                        OrderFood();
+                    }
                 }
             }
         }

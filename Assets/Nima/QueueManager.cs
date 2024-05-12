@@ -46,7 +46,7 @@ public class QueueManager : MonoBehaviour
             if (QueueList[i].catInQueue != null)
             {
                 QueueList[i].catInQueue.targetQueueTransform = QueueList[i].QueueObject.transform;
-                QueueList[i].catInQueue.currentState = CatMovement.CatStages.Entering;
+                QueueList[i].catInQueue.currentState = CatMovement.CatStages.MovingInQueue;
             }
 
         }

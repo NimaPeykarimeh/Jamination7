@@ -12,6 +12,7 @@ public class TableManager : MonoBehaviour
     {
         AllTableManager = FindObjectOfType<AllTableManager>();
         AllTableManager.availableTables.Add(this);
+        AllTableManager.tablesLeft.Add(this);
     }
 
     private void OnDrawGizmos()
