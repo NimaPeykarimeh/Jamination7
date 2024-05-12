@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
 {
+    AudioSource m_AudioSource;
     [SerializeField] int totalMoney;
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] MoneyAnimTrigger moneyAnimTrigger;
+    [SerializeField] AudioClip spendSound;
+    [SerializeField] AudioClip getMoneySound;
+    private void Awake()
+    {
+        m_AudioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
@@ -17,7 +24,7 @@ public class MoneyManager : MonoBehaviour
     {
         totalMoney += _amount;
         moneyAnimTrigger.moneyAnimText.SetText("$" + _amount.ToString());
-
+        m_AudioSource.PlayOneShot(getMoneySound);
         moneyText.SetText("$" + totalMoney.ToString());
         moneyAnimTrigger.TriggerAnimation(false);
     }
@@ -27,6 +34,7 @@ public class MoneyManager : MonoBehaviour
     {
         if (_spendAmount <= totalMoney)
         {
+            m_AudioSource.PlayOneShot(spendSound);
             totalMoney -= _spendAmount;
             moneyAnimTrigger.moneyAnimText.SetText("$" + _spendAmount.ToString());
             moneyAnimTrigger.TriggerAnimation(false);
