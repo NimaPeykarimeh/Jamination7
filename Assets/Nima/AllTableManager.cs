@@ -22,6 +22,7 @@ public class AllTableManager : MonoBehaviour
         {
             int _randomInt = Random.Range(0, availableTables.Count);
             _cat.currentTableManager = availableTables[_randomInt];
+            availableTables[_randomInt].customer = _cat;
             availableTables.Remove(availableTables[_randomInt]);
             queueManager.SendTheFirstCatInQueue();
 
@@ -31,6 +32,7 @@ public class AllTableManager : MonoBehaviour
     public void StealThisTable(TableManager _thisTable)
     {
         _thisTable.TableIsStolen();
+        _thisTable.customer.ExitTheRestaurant(false);
         availableTables.Remove(_thisTable);
         tablesLeft.Remove(_thisTable);
         stolenTables.Add(_thisTable);

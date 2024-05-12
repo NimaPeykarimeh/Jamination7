@@ -161,7 +161,7 @@ public class CatMovement : MonoBehaviour
         foodOrderText.SetText(currentFood.ToString());
     }
 
-    void ExitTheRestaurant(bool _isAngry)
+    public void ExitTheRestaurant(bool _isAngry)
     {
         if (_isAngry) 
         {

@@ -10,6 +10,7 @@ public class MoneyAnimTrigger : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        moneyAnimText = GetComponent<TextMeshProUGUI>();
     }
 
     public void TriggerAnimation(bool isSpending)
