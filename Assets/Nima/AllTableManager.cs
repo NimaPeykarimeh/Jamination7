@@ -11,6 +11,7 @@ public class AllTableManager : MonoBehaviour
 
     public bool tableAvailable;
     [SerializeField] bool isThatLastTable;
+    [SerializeField] GameObject gameOverPanel;
     private void Awake()
     {
         queueManager = FindObjectOfType<QueueManager>();
@@ -51,6 +52,8 @@ public class AllTableManager : MonoBehaviour
 
     public void AllTablesHasStolen()
     {
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0.0f;
         print("YOU LOSE");
     }
 

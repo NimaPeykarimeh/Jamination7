@@ -262,14 +262,17 @@ public class FoorServeController : MonoBehaviour
             {
                 case 1:
                     plate.gameObject.SetActive(true);
+                    plate.sprite = sushiSprite;
                     foodManager.StartMakingSushi();
                     break;
                 case 2:
                     plate.gameObject.SetActive(true);
+                    plate.sprite = saladSprite;
                     foodManager.StartMakingYS();
                     break;
                 case 3:
                     plate.gameObject.SetActive(true);
+                    plate.sprite = lasagnaSprite;
                     foodManager.StartMakingLazanya();
                     break;
                 default:
