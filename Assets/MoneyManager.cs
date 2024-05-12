@@ -11,6 +11,8 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] MoneyAnimTrigger moneyAnimTrigger;
     [SerializeField] AudioClip spendSound;
     [SerializeField] AudioClip getMoneySound;
+
+    [SerializeField] Animator totalMoneyAnimator;
     private void Awake()
     {
         m_AudioSource = GetComponent<AudioSource>();
@@ -41,7 +43,10 @@ public class MoneyManager : MonoBehaviour
             moneyText.SetText("$" + totalMoney.ToString());
             return true;
         }
-
+        else
+        {
+            totalMoneyAnimator.SetTrigger("NotEnough");
+        }
         return false;
     }
 }
