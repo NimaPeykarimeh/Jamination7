@@ -280,7 +280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9177002605226753270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -462,7 +462,7 @@ MonoBehaviour:
   tableWayPointCount: 0
   tableWayPointIndex: 0
   tableWayPoints: []
-  catScoreText: {fileID: 0}
+  catScoreText: {fileID: 1659422393806067130}
   patienceBar: {fileID: 2419501631944808942}
   orderingDuration: 30
   orderingTimer: 0
