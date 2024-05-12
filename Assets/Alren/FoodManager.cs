@@ -17,6 +17,7 @@ public class FoodManager : MonoBehaviour
     [SerializeField] private GameObject sushiSeaWeedMainPlate;
     [SerializeField] private GameObject sushiRiceRightPlate;
     [SerializeField] private GameObject sushiRiceWithSeaWeedMainPlate;
+    [SerializeField] private GameObject sushiRiceMainPlate;
     [SerializeField] private GameObject sushiSlider;
     [SerializeField] private Sprite sushiSprite1;
     [SerializeField] private Sprite sushiSprite2;
@@ -124,6 +125,9 @@ public class FoodManager : MonoBehaviour
             currentSushiPhase = 0;
             sushiSlider.GetComponent<Slider>().value = 0;
             sushiSlider.SetActive(true);
+
+            //dene
+            sushiRiceMainPlate.SetActive(false);
         }
     }
 
