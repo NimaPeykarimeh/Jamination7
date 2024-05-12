@@ -25,7 +25,7 @@ public class FoorServeController : MonoBehaviour
     [SerializeField] bool nearToKitchen;
     [SerializeField] FoodManager foodManager;
     [SerializeField] TableManager currentTable;
-
+    [SerializeField] GameObject plate;
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -88,7 +88,7 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if(selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To SUSHI");
+                    interactText.SetText("E To Cook\nQ To Instant Cook");
                 }
                 else
                 {
@@ -103,7 +103,7 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To EGG SALAD");
+                    interactText.SetText("E To Cook\nQ To Instant Cook");
                 }
                 else
                 {
@@ -118,7 +118,7 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To LASAGNA");
+                    interactText.SetText("E To Cook\nQ To Instant Cook");
                 }
                 else
                 {
@@ -163,6 +163,7 @@ public class FoorServeController : MonoBehaviour
     {
         if (isTrash)
         {
+            plate.SetActive(false);
             selectedFood = FoodMenuManager.FoodList.None;
         }
     }
@@ -183,17 +184,30 @@ public class FoorServeController : MonoBehaviour
             switch ((int)selectedFood) 
             {
                 case 1:
+                    plate.SetActive(true);
                     foodManager.StartMakingSushi();
                     break;
                 case 2:
+                    plate.SetActive(true);
                     foodManager.StartMakingYS();
                     break;
                 case 3:
+                    plate.SetActive(true);
                     foodManager.StartMakingLazanya();
                     break;
                 default:
                     break;
             }
+        }
+    }
+
+    void InstantCook()
+    {
+        if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None)
+        {
+            plate.SetActive(true);
+            selectedFood = availableFood;
+
         }
     }
 
@@ -208,6 +222,10 @@ public class FoorServeController : MonoBehaviour
             ThrowToTrash();
             GetTheFood();
             BuyTable();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            InstantCook();
         }
     }
 }

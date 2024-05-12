@@ -7,8 +7,13 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
+    MoneyManager moneyManager;
     [SerializeField] private TextMeshProUGUI totalScoreText;
     int totalPoint = 0;
+    private void Awake()
+    {
+        moneyManager = FindObjectOfType<MoneyManager>();
+    }
     private void Start()
     {
         totalScoreText.SetText("Score: 0");
@@ -20,11 +25,13 @@ public class GameManager : MonoBehaviour
         if (fillAmount > 0.5f)
         {
             totalPoint += 400;
+            moneyManager.GetMoney(70);
             catScoreText.SetText("+400 Points");
             StartCoroutine(TurnOffCatScoreTxt(catScoreText.gameObject));
         }
         else
         {
+            moneyManager.GetMoney(35);
             catScoreText.SetText("+200 Points");
             StartCoroutine(TurnOffCatScoreTxt(catScoreText.gameObject));
             totalPoint += 200;

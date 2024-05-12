@@ -657,8 +657,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae8c112865ed5e4b90fa367d4e5b04f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingPrice: 150
+  tablePrice: 400
   tableObject: {fileID: 815708045270976215}
   AllTableManager: {fileID: 0}
   interactionAreaObject: {fileID: 3025331247066440712}
   wayPointParent: {fileID: 1568125688954082784}
   isStolen: 0
+  priceText: {fileID: 7982438473101287307}

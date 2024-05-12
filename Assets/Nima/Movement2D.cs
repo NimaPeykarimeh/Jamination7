@@ -40,6 +40,7 @@ public class Movement2D : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool isGrounded;
     [SerializeField] float circleRadius = 0.5f;
+    public Animator animator;
 
     [Space]
     [SerializeField] float dist;
@@ -52,7 +53,7 @@ public class Movement2D : MonoBehaviour
     private void Awake()
     {
 
-
+        animator = GetComponent<Animator>();
         rb2 = GetComponent<Rigidbody2D>();
         
     }
@@ -239,6 +240,7 @@ public class Movement2D : MonoBehaviour
     }
     void MoveTopDownPlayer()
     {
-        rb2.velocity = new Vector2(currentHorizontalSpeed,currentVerticalSpeed); 
+        rb2.velocity = new Vector2(currentHorizontalSpeed,currentVerticalSpeed);
+        animator.SetFloat("speed", rb2.velocity.magnitude);
     }
 }

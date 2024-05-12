@@ -7,12 +7,14 @@ public class CatSpawner : MonoBehaviour
     QueueManager queueManager;
     [SerializeField] GameObject catPrefab;
 
-    [SerializeField] float spawnCoolDown = 1f;
+    [SerializeField] float minSpawnCoolDown = 1f;
+    [SerializeField] float maxSpawnCooldown = 10f;
     [SerializeField] float spawnTimer;
 
     [SerializeField] bool isQueueAvailable;
     [SerializeField] bool isReadyToSpawn;
     int count = 0;
+
     private void Awake()
     {
         queueManager = FindObjectOfType<QueueManager>();
@@ -50,7 +52,7 @@ public class CatSpawner : MonoBehaviour
         count++;
         isQueueAvailable = false;
         isReadyToSpawn = false;
-        spawnTimer = spawnCoolDown;
+        spawnTimer = Random.Range(minSpawnCoolDown,maxSpawnCooldown);
         GameObject a = Instantiate(catPrefab,transform.position,transform.rotation);
         a.name = count.ToString();
     }
