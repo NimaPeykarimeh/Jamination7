@@ -154,7 +154,7 @@ public class FoorServeController : MonoBehaviour
         if (isCustomer && selectedFood != FoodMenuManager.FoodList.None)
         {
             currentCat.FoodServed(selectedFood);
-            
+            plate.SetActive(false);
             selectedFood = FoodMenuManager.FoodList.None;
         }
     }
