@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
+    [SerializeField] GameObject tableObject;
     [SerializeField] AllTableManager AllTableManager;
+    [SerializeField] GameObject interactionAreaObject;
     public Transform wayPointParent;
-    public bool isAvailable = false;
+    public bool isStolen = false;
 
     private void Awake()
     {
@@ -15,6 +17,17 @@ public class TableManager : MonoBehaviour
         AllTableManager.tablesLeft.Add(this);
     }
 
+    public void TableIsStolen()
+    {
+        tableObject.SetActive(false);
+        interactionAreaObject.SetActive(true);
+    }
+    public void BuyTable()
+    {
+        AllTableManager.BuyTable(this);
+        tableObject.SetActive(true);
+        interactionAreaObject.SetActive(false);
+    }
     private void OnDrawGizmos()
     {
         for (int i = 0; i < wayPointParent.childCount; i++) 

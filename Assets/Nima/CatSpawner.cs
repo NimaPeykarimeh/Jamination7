@@ -20,7 +20,7 @@ public class CatSpawner : MonoBehaviour
 
     private void Start()
     {
-        spawnTimer = spawnCoolDown;
+        //spawnTimer = spawnCoolDown;
     }
 
     private void Update()

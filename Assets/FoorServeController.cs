@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class FoorServeController : MonoBehaviour
 {
+    AudioSource audioSource;
+    [SerializeField] AudioClip catServedAdudio;
     [Header("CircleCast")]
     [SerializeField] float circleRadius = 0.5f;
     [SerializeField] LayerMask checkLayers;
@@ -21,6 +23,13 @@ public class FoorServeController : MonoBehaviour
     [SerializeField] FoodMenuManager.FoodList availableFood;
     [SerializeField] bool nearToKitchen;
     [SerializeField] FoodManager foodManager;
+    [SerializeField] TableManager currentTable;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void CheckCircle()
     {
         Collider2D _collider = Physics2D.OverlapCircle(transform.position, circleRadius, checkLayers);
@@ -57,7 +66,18 @@ public class FoorServeController : MonoBehaviour
                 }
 
             }
-            
+
+            else if (_collider.CompareTag("BuyTable"))
+            {
+                currentTable = _collider.transform.parent.GetComponent<TableManager>();
+                interactText.color = discardColor;
+                interactText.SetText("E To Buy");
+            }
+            else
+            {
+                currentTable = null;
+            }
+
             if (_collider.CompareTag("Sushi"))
             {
                 
@@ -117,6 +137,7 @@ public class FoorServeController : MonoBehaviour
         }
         else
         {
+            currentTable = null;
             nearToKitchen = false;
             isTrash = false;
             availableFood = FoodMenuManager.FoodList.None;
@@ -131,6 +152,7 @@ public class FoorServeController : MonoBehaviour
         if (isCustomer && selectedFood != FoodMenuManager.FoodList.None)
         {
             currentCat.FoodServed(selectedFood);
+            
             selectedFood = FoodMenuManager.FoodList.None;
         }
     }
@@ -143,6 +165,13 @@ public class FoorServeController : MonoBehaviour
         }
     }
 
+    void BuyTable()
+    {
+        if (currentTable != null)
+        {
+            currentTable.BuyTable();
+        }
+    }
 
     void GetTheFood()
     {
@@ -176,6 +205,7 @@ public class FoorServeController : MonoBehaviour
             ServeTheCat();
             ThrowToTrash();
             GetTheFood();
+            BuyTable();
         }
     }
 }

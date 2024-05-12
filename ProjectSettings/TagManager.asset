@@ -9,6 +9,7 @@ TagManager:
   - Sushi
   - EggSalad
   - Lasagna
+  - BuyTable
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Cat
   - Trash
   - CockingPlace
-  - 
+  - BuyTable
   - 
   - 
   - 

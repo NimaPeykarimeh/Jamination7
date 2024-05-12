@@ -7,6 +7,7 @@ public class AllTableManager : MonoBehaviour
     QueueManager queueManager;
     public List<TableManager> availableTables;
     public List<TableManager> tablesLeft;
+    public List<TableManager> stolenTables;
 
     public bool tableAvailable;
 
@@ -29,10 +30,36 @@ public class AllTableManager : MonoBehaviour
 
     public void StealThisTable(TableManager _thisTable)
     {
+        _thisTable.TableIsStolen();
         availableTables.Remove(_thisTable);
         tablesLeft.Remove(_thisTable);
+        stolenTables.Add(_thisTable);
     }
 
+    public void BuyTable(TableManager _thisTable)
+    {
+        if (stolenTables.Count > 0)
+        {
+            foreach (TableManager _table in stolenTables)
+            {
+                if (_table == _thisTable)
+                {
+                    availableTables.Add(_thisTable);
+                    tablesLeft.Add(_thisTable);
+                    stolenTables.Remove(_thisTable);
+                    break;
+                }
+            }
+
+        }
+        else
+        {
+            availableTables.Add(_thisTable);
+            tablesLeft.Add(_thisTable);
+            stolenTables.Remove(_thisTable);
+        }
+        
+    }
 
     public bool IsThisTableHasStolen(TableManager _thisTable)
     {

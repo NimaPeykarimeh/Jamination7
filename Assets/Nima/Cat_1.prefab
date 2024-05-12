@@ -328,9 +328,9 @@ MonoBehaviour:
   tableWayPointIndex: 0
   tableWayPoints: []
   patienceBar: {fileID: 2419501631944808942}
-  orderingDuration: 10
+  orderingDuration: 30
   orderingTimer: 0
-  waitingForTableDuration: 10
+  waitingForTableDuration: 30
   waitingForTableTimer: 0
   currentFood: 0
   eatingDuration: 5

@@ -164,7 +164,8 @@ public class CatMovement : MonoBehaviour
         {
             if (!allTableManager.IsThisTableHasStolen(currentTableManager))
             {
-                currentTableManager.gameObject.SetActive(false);
+                //currentTableManager.TableIsStolen();
+                //currentTableManager.gameObject.SetActive(false);
                 allTableManager.StealThisTable(currentTableManager);
                 animator.SetBool("IsCarryingTable", true);
             }
