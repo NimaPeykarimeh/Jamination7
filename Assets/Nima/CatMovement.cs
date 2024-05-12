@@ -14,6 +14,7 @@ public class CatMovement : MonoBehaviour
     FoodMenuManager foodMenuManager;
     [SerializeField] Transform spriteBody;
     [SerializeField] Transform tableBody;
+    private GameManager gameManager;
 
     public Transform targetQueueTransform;
     public bool firstInQueue;
@@ -31,7 +32,7 @@ public class CatMovement : MonoBehaviour
     [SerializeField] int tableWayPointCount;
     [SerializeField] int tableWayPointIndex;
     [SerializeField] List<Transform> tableWayPoints;
-
+    [SerializeField] TextMeshProUGUI catScoreText;
 
     [Header("Patiente")]
     [SerializeField] Image patienceBar;
@@ -66,6 +67,7 @@ public class CatMovement : MonoBehaviour
     {
         rb2 = GetComponent<Rigidbody2D>();
         queueManager = FindObjectOfType<QueueManager>();
+        gameManager = FindObjectOfType<GameManager>();
         currentState = CatStages.Entering;
         targetQueueTransform = queueManager.AddToQueue(this);
         patienceBar.gameObject.SetActive(false);
@@ -135,6 +137,7 @@ public class CatMovement : MonoBehaviour
         {
             if (_servedFood == currentFood)
             {
+                gameManager.CreatePointText(catScoreText);
                 currentState = CatStages.Eating;
                 foodOrderText.SetText("Eating...");
                 eatingTimer = eatingDuration;
@@ -184,6 +187,8 @@ public class CatMovement : MonoBehaviour
         patienceBar.gameObject.SetActive(false);
         foodOrderText.SetText("");
     }
+
+    
 
     private void Update()
     {
