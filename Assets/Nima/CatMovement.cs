@@ -137,7 +137,7 @@ public class CatMovement : MonoBehaviour
         {
             if (_servedFood == currentFood)
             {
-                gameManager.CreatePointText(catScoreText);
+                gameManager.CreatePointText(catScoreText, patienceBar.fillAmount);
                 currentState = CatStages.Eating;
                 foodOrderText.SetText("Eating...");
                 eatingTimer = eatingDuration;
