@@ -7,7 +7,7 @@ public class MoneyManager : MonoBehaviour
 {
     [SerializeField] int totalMoney;
     [SerializeField] TextMeshProUGUI moneyText;
-
+    [SerializeField] MoneyAnimTrigger moneyAnimTrigger;
 
     private void Start()
     {
@@ -16,7 +16,10 @@ public class MoneyManager : MonoBehaviour
     public void GetMoney(int _amount)
     {
         totalMoney += _amount;
+        moneyAnimTrigger.moneyAnimText.SetText("$" + _amount.ToString());
+
         moneyText.SetText("$" + totalMoney.ToString());
+        moneyAnimTrigger.TriggerAnimation(false);
     }
 
 
@@ -25,6 +28,8 @@ public class MoneyManager : MonoBehaviour
         if (_spendAmount <= totalMoney)
         {
             totalMoney -= _spendAmount;
+            moneyAnimTrigger.moneyAnimText.SetText("$" + _spendAmount.ToString());
+            moneyAnimTrigger.TriggerAnimation(false);
             moneyText.SetText("$" + totalMoney.ToString());
             return true;
         }

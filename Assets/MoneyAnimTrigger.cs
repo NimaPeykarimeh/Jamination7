@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MoneyAnimTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Animator animator;
+    public TextMeshProUGUI moneyAnimText;
+    private void Awake()
     {
-        
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TriggerAnimation(bool isSpending)
     {
-        
+        if (isSpending)
+        {
+            animator.SetTrigger("Spend");
+        }
+        else
+        {
+            animator.Play("GetMoney");
+        }
     }
+
 }
