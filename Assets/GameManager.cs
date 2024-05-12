@@ -8,7 +8,11 @@ using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI totalScoreText;
-    int totalPoint = 0;  
+    int totalPoint = 0;
+    private void Start()
+    {
+        totalScoreText.SetText("Score: 0");
+    }
     public void CreatePointText(TextMeshProUGUI catScoreText, float fillAmount)
     {
         catScoreText.gameObject.SetActive(true);
