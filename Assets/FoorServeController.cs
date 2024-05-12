@@ -283,25 +283,28 @@ public class FoorServeController : MonoBehaviour
 
     void InstantCook()
     {
-        if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None && moneyManager.SpendMoney(instantCookPrice))
+        if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None)
         {
-            plate.gameObject.SetActive(true);
-            if (availableFood == FoodMenuManager.FoodList.Lasagna && canInsLasagna)
+            
+            if (availableFood == FoodMenuManager.FoodList.Lasagna && canInsLasagna && moneyManager.SpendMoney(instantCookPrice))
             {
+                plate.gameObject.SetActive(true);
                 lasagnaInsTimer = quickCockTimer;
                 canInsLasagna = false;
                 plate.sprite = lasagnaSprite;
                 selectedFood = availableFood;
             }
-            else if (availableFood == FoodMenuManager.FoodList.Sushi && canInsSushi)
+            else if (availableFood == FoodMenuManager.FoodList.Sushi && canInsSushi && moneyManager.SpendMoney(instantCookPrice))
             {
+                plate.gameObject.SetActive(true);
                 sushiInsTimer = quickCockTimer;
                 canInsSushi = false;
                 plate.sprite = sushiSprite;
                 selectedFood = availableFood;
             }
-            else if (availableFood == FoodMenuManager.FoodList.EggSalad && canInsSalad)
+            else if (availableFood == FoodMenuManager.FoodList.EggSalad && canInsSalad && moneyManager.SpendMoney(instantCookPrice))
             {
+                plate.gameObject.SetActive(true);
                 saladInsTimer = quickCockTimer;
                 canInsSalad = false;
                 plate.sprite = saladSprite;

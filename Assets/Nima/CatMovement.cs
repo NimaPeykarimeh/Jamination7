@@ -51,6 +51,12 @@ public class CatMovement : MonoBehaviour
     [SerializeField] float eatingTimer;
     [SerializeField] TextMeshProUGUI foodOrderText;
     [SerializeField] GameObject table;
+
+    [Space]
+    [SerializeField] Image orderImage;
+    [SerializeField] Sprite lasagnaImage;
+    [SerializeField] Sprite sushiImage;
+    [SerializeField] Sprite saladImage;
     public enum CatStages
     {
         Entering,
@@ -157,8 +163,21 @@ public class CatMovement : MonoBehaviour
 
     void OrderFood()
     {
+        orderImage.gameObject.SetActive(true);
         currentFood = foodMenuManager.GetRandomFood();
-        foodOrderText.SetText(currentFood.ToString());
+        if (currentFood == FoodMenuManager.FoodList.Sushi)
+        {
+            orderImage.sprite = sushiImage;
+        }
+        else if (currentFood == FoodMenuManager.FoodList.EggSalad)
+        {
+            orderImage.sprite = saladImage;
+        }
+        else if (currentFood == FoodMenuManager.FoodList.Lasagna)
+        {
+            orderImage.sprite = lasagnaImage;
+        }
+        //foodOrderText.SetText(currentFood.ToString());
     }
 
     public void ExitTheRestaurant(bool _isAngry)
