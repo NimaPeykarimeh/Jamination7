@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     MoneyManager moneyManager;
     [SerializeField] private TextMeshProUGUI totalScoreText;
-    int totalPoint = 0;
+    public int totalPoint = 0;
     private void Awake()
     {
         moneyManager = FindObjectOfType<MoneyManager>();

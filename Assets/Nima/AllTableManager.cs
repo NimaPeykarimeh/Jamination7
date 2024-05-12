@@ -5,6 +5,7 @@ using UnityEngine;
 public class AllTableManager : MonoBehaviour
 {
     QueueManager queueManager;
+    [SerializeField] HighScoreManager highScoreManager;
     public List<TableManager> availableTables;
     public List<TableManager> tablesLeft;
     public List<TableManager> stolenTables;
@@ -54,6 +55,7 @@ public class AllTableManager : MonoBehaviour
     public void AllTablesHasStolen()
     {
         gameOverPanel.SetActive(true);
+        highScoreManager.UpdateHighScore();
         Time.timeScale = 0.0f;
         print("YOU LOSE");
     }
