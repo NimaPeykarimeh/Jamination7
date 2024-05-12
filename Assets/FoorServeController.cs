@@ -26,6 +26,7 @@ public class FoorServeController : MonoBehaviour
     [SerializeField] FoodManager foodManager;
     [SerializeField] TableManager currentTable;
     [SerializeField] GameObject plate;
+    [SerializeField] int instantCookPrice = 20;
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -88,7 +89,7 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if(selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\nQ To Instant Cook");
+                    interactText.SetText("E To Cook\nQ To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
@@ -103,7 +104,7 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\nQ To Instant Cook");
+                    interactText.SetText("E To Cook\nQ To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
@@ -118,7 +119,7 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\nQ To Instant Cook");
+                    interactText.SetText("E To Cook\nQ To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
@@ -203,7 +204,7 @@ public class FoorServeController : MonoBehaviour
 
     void InstantCook()
     {
-        if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None)
+        if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None && moneyManager.SpendMoney(instantCookPrice))
         {
             plate.SetActive(true);
             selectedFood = availableFood;
