@@ -6,6 +6,7 @@ using UnityEngine;
 public class FoorServeController : MonoBehaviour
 {
     AudioSource audioSource;
+    MoneyManager moneyManager;
     [SerializeField] AudioClip catServedAdudio;
     [Header("CircleCast")]
     [SerializeField] float circleRadius = 0.5f;
@@ -28,6 +29,7 @@ public class FoorServeController : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        moneyManager = FindObjectOfType<MoneyManager>();
     }
 
     void CheckCircle()
