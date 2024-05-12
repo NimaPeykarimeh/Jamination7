@@ -37,7 +37,7 @@ public class MoneyManager : MonoBehaviour
             m_AudioSource.PlayOneShot(spendSound);
             totalMoney -= _spendAmount;
             moneyAnimTrigger.moneyAnimText.SetText("$" + _spendAmount.ToString());
-            moneyAnimTrigger.TriggerAnimation(false);
+            moneyAnimTrigger.TriggerAnimation(true);
             moneyText.SetText("$" + totalMoney.ToString());
             return true;
         }

@@ -14,6 +14,7 @@ public class TableManager : MonoBehaviour
     public Transform wayPointParent;
     public bool isStolen = false;
     [SerializeField] TextMeshProUGUI priceText;
+    public CatMovement customer;
 
     private void Awake()
     {
