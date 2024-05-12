@@ -10,7 +10,7 @@ public class AllTableManager : MonoBehaviour
     public List<TableManager> stolenTables;
 
     public bool tableAvailable;
-
+    [SerializeField] bool isThatLastTable;
     private void Awake()
     {
         queueManager = FindObjectOfType<QueueManager>();
@@ -36,6 +36,22 @@ public class AllTableManager : MonoBehaviour
         availableTables.Remove(_thisTable);
         tablesLeft.Remove(_thisTable);
         stolenTables.Add(_thisTable);
+        
+    }
+
+    public void IsThatLastTable()
+    {
+        if (tablesLeft.Count == 0)
+        {
+            AllTablesHasStolen();
+        }
+        
+
+    }
+
+    public void AllTablesHasStolen()
+    {
+        print("YOU LOSE");
     }
 
     public void BuyTable(TableManager _thisTable)

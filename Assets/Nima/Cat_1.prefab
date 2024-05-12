@@ -464,9 +464,9 @@ MonoBehaviour:
   tableWayPoints: []
   catScoreText: {fileID: 1659422393806067130}
   patienceBar: {fileID: 2419501631944808942}
-  orderingDuration: 30
+  orderingDuration: 10
   orderingTimer: 0
-  waitingForTableDuration: 30
+  waitingForTableDuration: 10
   waitingForTableTimer: 0
   currentFood: 0
   eatingDuration: 5

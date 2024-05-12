@@ -290,6 +290,7 @@ public class CatMovement : MonoBehaviour
                 tableWayPointIndex++;
                 if (tableWayPointIndex > tableWayPointCount)
                 {
+                    allTableManager.IsThatLastTable();
                     gameObject.SetActive(false);
                 }
             }
