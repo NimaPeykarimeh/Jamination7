@@ -15,6 +15,7 @@ public class AllTableManager : MonoBehaviour
     private void Awake()
     {
         queueManager = FindObjectOfType<QueueManager>();
+        Time.timeScale = 1.0f;
     }
 
     public void GetRandomTable(CatMovement _cat)
