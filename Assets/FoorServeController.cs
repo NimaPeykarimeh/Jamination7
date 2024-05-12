@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class FoorServeController : MonoBehaviour
@@ -19,14 +20,37 @@ public class FoorServeController : MonoBehaviour
     [SerializeField] bool isCustomer;
 
     [SerializeField] TextMeshProUGUI interactText;
+    [SerializeField] TextMeshProUGUI quickCook;
     [SerializeField] Color serveColor;
+    [SerializeField] Color defaultColor = Color.white;
     [SerializeField] Color discardColor;
+    [Space]
+
+    [SerializeField] Color quickCookYesColor;
+    [SerializeField] Color quickCookNoColor;
+
+    [Space]
     [SerializeField] FoodMenuManager.FoodList availableFood;
     [SerializeField] bool nearToKitchen;
     [SerializeField] FoodManager foodManager;
     [SerializeField] TableManager currentTable;
-    [SerializeField] GameObject plate;
+    [SerializeField] SpriteRenderer plate;
     [SerializeField] int instantCookPrice = 20;
+
+    [Header("InstantTimers")]
+    [SerializeField] float quickCockTimer = 30f;
+    [SerializeField] float sushiInsTimer;
+    [SerializeField] float lasagnaInsTimer;
+    [SerializeField] float saladInsTimer;
+
+    [SerializeField] bool canInsSushi;
+    [SerializeField] bool canInsLasagna;
+    [SerializeField] bool canInsSalad;
+
+    [SerializeField] Sprite saladSprite;
+    [SerializeField] Sprite sushiSprite;
+    [SerializeField] Sprite lasagnaSprite;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -52,6 +76,7 @@ public class FoorServeController : MonoBehaviour
                 else
                 {
                     interactText.SetText("");
+                    quickCook.SetText("");
                 }
             }
 
@@ -66,6 +91,7 @@ public class FoorServeController : MonoBehaviour
                 else
                 {
                     interactText.SetText("");
+                    quickCook.SetText("");
                 }
 
             }
@@ -84,46 +110,76 @@ public class FoorServeController : MonoBehaviour
             if (_collider.CompareTag("Sushi"))
             {
                 
-                interactText.color = discardColor;
+                interactText.color = defaultColor;
                 availableFood = FoodMenuManager.FoodList.Sushi;
                 nearToKitchen = true;
                 if(selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\nQ To Instant Cook($" + instantCookPrice + ")");
+                    interactText.SetText("E To Cook\n");
+                    if (canInsSushi)
+                    {
+                        quickCook.color = quickCookYesColor;
+                    }
+                    else
+                    {
+                        quickCook.color = quickCookNoColor;
+                    }
+                    quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
                     interactText.SetText("");
+                    quickCook.SetText("");
                 }
             }
             else if (_collider.CompareTag("EggSalad"))
             {
                 availableFood = FoodMenuManager.FoodList.EggSalad;
-                interactText.color = discardColor;
+                interactText.color = defaultColor;
                 
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\nQ To Instant Cook($" + instantCookPrice + ")");
+                    interactText.SetText("E To Cook");
+                    if (canInsSalad)
+                    {
+                        quickCook.color = quickCookYesColor;
+                    }
+                    else
+                    {
+                        quickCook.color = quickCookNoColor;
+                    }
+                    quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
                     interactText.SetText("");
+                    quickCook.SetText("");
                 }
             }
             else if (_collider.CompareTag("Lasagna"))
             {
-                interactText.color = discardColor;
+                interactText.color = defaultColor;
                 
                 availableFood = FoodMenuManager.FoodList.Lasagna;
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\nQ To Instant Cook($" + instantCookPrice + ")");
+                    if (canInsLasagna)
+                    {
+                        quickCook.color = quickCookYesColor;
+                    }
+                    else
+                    {
+                        quickCook.color = quickCookNoColor;
+                    }
+                    interactText.SetText("E To Cook");
+                    quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
                     interactText.SetText("");
+                    quickCook.SetText("");
                 }
 
             }
@@ -145,17 +201,37 @@ public class FoorServeController : MonoBehaviour
             isTrash = false;
             availableFood = FoodMenuManager.FoodList.None;
             interactText.SetText("");
+            quickCook.SetText("");
         }
 
     }
 
+    void CookdInsTimers()
+    {
+        lasagnaInsTimer -= Time.deltaTime;
+        sushiInsTimer -= Time.deltaTime;
+        saladInsTimer -= Time.deltaTime;
+
+        if (saladInsTimer <= 0)
+        {
+            canInsSalad = true;
+        }
+        if (sushiInsTimer <= 0)
+        {
+            canInsSushi = true;
+        }
+        if (lasagnaInsTimer <= 0)
+        {
+            canInsLasagna = true;
+        }
+    }
 
     void ServeTheCat()
     {
         if (isCustomer && selectedFood != FoodMenuManager.FoodList.None)
         {
             currentCat.FoodServed(selectedFood);
-            plate.SetActive(false);
+            plate.gameObject.SetActive(false);
             selectedFood = FoodMenuManager.FoodList.None;
         }
     }
@@ -164,7 +240,7 @@ public class FoorServeController : MonoBehaviour
     {
         if (isTrash)
         {
-            plate.SetActive(false);
+            plate.gameObject.SetActive(false);
             selectedFood = FoodMenuManager.FoodList.None;
         }
     }
@@ -185,15 +261,15 @@ public class FoorServeController : MonoBehaviour
             switch ((int)selectedFood) 
             {
                 case 1:
-                    plate.SetActive(true);
+                    plate.gameObject.SetActive(true);
                     foodManager.StartMakingSushi();
                     break;
                 case 2:
-                    plate.SetActive(true);
+                    plate.gameObject.SetActive(true);
                     foodManager.StartMakingYS();
                     break;
                 case 3:
-                    plate.SetActive(true);
+                    plate.gameObject.SetActive(true);
                     foodManager.StartMakingLazanya();
                     break;
                 default:
@@ -206,8 +282,29 @@ public class FoorServeController : MonoBehaviour
     {
         if (nearToKitchen && selectedFood == FoodMenuManager.FoodList.None && moneyManager.SpendMoney(instantCookPrice))
         {
-            plate.SetActive(true);
-            selectedFood = availableFood;
+            plate.gameObject.SetActive(true);
+            if (availableFood == FoodMenuManager.FoodList.Lasagna && canInsLasagna)
+            {
+                lasagnaInsTimer = quickCockTimer;
+                canInsLasagna = false;
+                plate.sprite = lasagnaSprite;
+                selectedFood = availableFood;
+            }
+            else if (availableFood == FoodMenuManager.FoodList.Sushi && canInsSushi)
+            {
+                sushiInsTimer = quickCockTimer;
+                canInsSushi = false;
+                plate.sprite = sushiSprite;
+                selectedFood = availableFood;
+            }
+            else if (availableFood == FoodMenuManager.FoodList.EggSalad && canInsSalad)
+            {
+                saladInsTimer = quickCockTimer;
+                canInsSalad = false;
+                plate.sprite = saladSprite;
+                selectedFood = availableFood;
+            }
+            
 
         }
     }
@@ -215,7 +312,7 @@ public class FoorServeController : MonoBehaviour
     private void Update()
     {
         CheckCircle();
-        
+        CookdInsTimers();
 
         if (Input.GetKeyDown(KeyCode.E))
         {
