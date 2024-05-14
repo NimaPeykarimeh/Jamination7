@@ -51,6 +51,9 @@ public class FoorServeController : MonoBehaviour
     [SerializeField] Sprite sushiSprite;
     [SerializeField] Sprite lasagnaSprite;
 
+    [Header("InstantCookUI")]
+    [SerializeField] RectTransform instantCookBG;
+    [SerializeField] RectTransform instantCookFillBar;
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -118,10 +121,13 @@ public class FoorServeController : MonoBehaviour
                     interactText.SetText("E To Cook\n");
                     if (canInsSushi)
                     {
+                        instantCookBG.gameObject.SetActive(false);
                         quickCook.color = quickCookYesColor;
                     }
                     else
                     {
+                        instantCookBG.gameObject.SetActive(true);
+                        instantCookFillBar.sizeDelta = new Vector2(instantCookBG.sizeDelta.x * (1 - sushiInsTimer / quickCockTimer),instantCookBG.sizeDelta.y);
                         quickCook.color = quickCookNoColor;
                     }
                     quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
@@ -143,10 +149,14 @@ public class FoorServeController : MonoBehaviour
                     interactText.SetText("E To Cook");
                     if (canInsSalad)
                     {
+                        instantCookBG.gameObject.SetActive(false);
                         quickCook.color = quickCookYesColor;
                     }
                     else
                     {
+                        instantCookBG.gameObject.SetActive(true);
+                        instantCookFillBar.sizeDelta = new Vector2(instantCookBG.sizeDelta.x * (1 - saladInsTimer / quickCockTimer), instantCookBG.sizeDelta.y);
+
                         quickCook.color = quickCookNoColor;
                     }
                     quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
@@ -167,10 +177,13 @@ public class FoorServeController : MonoBehaviour
                 {
                     if (canInsLasagna)
                     {
+                        instantCookBG.gameObject.SetActive(false);
                         quickCook.color = quickCookYesColor;
                     }
                     else
                     {
+                        instantCookBG.gameObject.SetActive(true);
+                        instantCookFillBar.sizeDelta = new Vector2(instantCookBG.sizeDelta.x * (1 - lasagnaInsTimer / quickCockTimer), instantCookBG.sizeDelta.y);
                         quickCook.color = quickCookNoColor;
                     }
                     interactText.SetText("E To Cook");
@@ -178,6 +191,7 @@ public class FoorServeController : MonoBehaviour
                 }
                 else
                 {
+                    instantCookBG.gameObject.SetActive(false);
                     interactText.SetText("");
                     quickCook.SetText("");
                 }
@@ -200,6 +214,7 @@ public class FoorServeController : MonoBehaviour
             nearToKitchen = false;
             isTrash = false;
             availableFood = FoodMenuManager.FoodList.None;
+            instantCookBG.gameObject.SetActive(false);
             interactText.SetText("");
             quickCook.SetText("");
         }

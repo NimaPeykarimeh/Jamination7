@@ -57,6 +57,9 @@ public class CatMovement : MonoBehaviour
     [SerializeField] Sprite lasagnaImage;
     [SerializeField] Sprite sushiImage;
     [SerializeField] Sprite saladImage;
+    [SerializeField] Sprite eatingImage;
+    [SerializeField] Sprite happilyEeated;
+    [SerializeField] Sprite angryIcon;
     public enum CatStages
     {
         Entering,
@@ -145,6 +148,7 @@ public class CatMovement : MonoBehaviour
             {
                 gameManager.CreatePointText(catScoreText, patienceBar.fillAmount);
                 currentState = CatStages.Eating;
+                orderImage.sprite = eatingImage;
                 foodOrderText.SetText("Eating...");
                 eatingTimer = eatingDuration;
             }
@@ -191,6 +195,7 @@ public class CatMovement : MonoBehaviour
                 allTableManager.StealThisTable(currentTableManager);
                 animator.SetBool("IsCarryingTable", true);
             }
+            orderImage.sprite = angryIcon;
             
             //allTableManager.tablesLeft.Remove(currentTableManager);
             //table.SetActive(true);
@@ -198,6 +203,7 @@ public class CatMovement : MonoBehaviour
         }
         else
         {
+            orderImage.sprite = happilyEeated;
             allTableManager.ReturnThisTable(currentTableManager);
             //allTableManager.availableTables.Add(currentTableManager);
         }

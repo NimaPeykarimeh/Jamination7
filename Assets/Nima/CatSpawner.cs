@@ -27,7 +27,7 @@ public class CatSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (!isReadyToSpawn)
+        if (!isReadyToSpawn) //&& !isQueueAvailable
         {
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0)
