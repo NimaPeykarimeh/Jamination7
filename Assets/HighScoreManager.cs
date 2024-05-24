@@ -19,6 +19,7 @@ public class HighScoreManager : MonoBehaviour
     {
         // Load the high score from PlayerPrefs
         highScore = PlayerPrefs.GetInt("HighScore", 0);
+        print(highScore);
         //UpdateHighScoreText();
     }
 
@@ -31,17 +32,16 @@ public class HighScoreManager : MonoBehaviour
             // Save the new high score to PlayerPrefs
             PlayerPrefs.SetInt("HighScore", highScore);
             PlayerPrefs.Save();
-            UpdateHighScoreText();
         }
+        UpdateHighScoreText();
     }
 
     // Update the high score text on UI
     private void UpdateHighScoreText()
     {
-        if (highScoreText != null)
-        {
-            currentScore.text = "Score: " + gameManager.totalPoint.ToString();
-            highScoreText.text = "High Score: " + highScore.ToString();
-        }
+
+        currentScore.text = "Score: " + gameManager.totalPoint.ToString();
+        highScoreText.text = "High Score: " + highScore.ToString();
+
     }
 }

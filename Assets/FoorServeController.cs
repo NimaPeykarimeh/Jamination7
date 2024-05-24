@@ -74,7 +74,8 @@ public class FoorServeController : MonoBehaviour
                 if (isCustomer && selectedFood != FoodMenuManager.FoodList.None)
                 {
                     interactText.color = serveColor;
-                    interactText.SetText("E To Serve");
+                    interactText.SetText("Serve");
+                    //interactText.SetText("E To Serve");
                 }
                 else
                 {
@@ -89,7 +90,8 @@ public class FoorServeController : MonoBehaviour
                 if (selectedFood != FoodMenuManager.FoodList.None)
                 {
                     interactText.color = discardColor;
-                    interactText.SetText("E To Discard");
+                    interactText.SetText("Discard");
+                    //interactText.SetText("E To Discard");
                 }
                 else
                 {
@@ -103,7 +105,8 @@ public class FoorServeController : MonoBehaviour
             {
                 currentTable = _collider.transform.parent.GetComponent<TableManager>();
                 interactText.color = discardColor;
-                interactText.SetText("E To Buy");
+                interactText.SetText("Buy");
+                //interactText.SetText("E To Buy");
             }
             else
             {
@@ -118,7 +121,8 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if(selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook\n");
+                    //interactText.SetText("E To Cook");
+                    interactText.SetText("Cook");
                     if (canInsSushi)
                     {
                         instantCookBG.gameObject.SetActive(false);
@@ -130,7 +134,8 @@ public class FoorServeController : MonoBehaviour
                         instantCookFillBar.sizeDelta = new Vector2(instantCookBG.sizeDelta.x * (1 - sushiInsTimer / quickCockTimer),instantCookBG.sizeDelta.y);
                         quickCook.color = quickCookNoColor;
                     }
-                    quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
+                    quickCook.SetText("Instant Cook($" + instantCookPrice + ")");
+                    //quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
@@ -146,7 +151,8 @@ public class FoorServeController : MonoBehaviour
                 nearToKitchen = true;
                 if (selectedFood == FoodMenuManager.FoodList.None)
                 {
-                    interactText.SetText("E To Cook");
+                    //interactText.SetText("E To Cook");
+                    interactText.SetText("Cook");
                     if (canInsSalad)
                     {
                         instantCookBG.gameObject.SetActive(false);
@@ -159,7 +165,8 @@ public class FoorServeController : MonoBehaviour
 
                         quickCook.color = quickCookNoColor;
                     }
-                    quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
+                    quickCook.SetText("Instant Cook($" + instantCookPrice + ")");
+                    //quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
@@ -186,8 +193,10 @@ public class FoorServeController : MonoBehaviour
                         instantCookFillBar.sizeDelta = new Vector2(instantCookBG.sizeDelta.x * (1 - lasagnaInsTimer / quickCockTimer), instantCookBG.sizeDelta.y);
                         quickCook.color = quickCookNoColor;
                     }
-                    interactText.SetText("E To Cook");
-                    quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
+                    interactText.SetText("Cook");
+                    //interactText.SetText("E To Cook");
+                    quickCook.SetText("Instant Cook($" + instantCookPrice + ")");
+                    //quickCook.SetText("Q To Instant Cook($" + instantCookPrice + ")");
                 }
                 else
                 {
@@ -330,6 +339,20 @@ public class FoorServeController : MonoBehaviour
         }
     }
 
+    public void MainAction()
+    {
+        ServeTheCat();
+        ThrowToTrash();
+        GetTheFood();
+        
+    }
+
+    public void SecondaryAction()
+    {
+        InstantCook();
+        BuyTable();
+    }
+
     private void Update()
     {
         CheckCircle();
@@ -337,14 +360,12 @@ public class FoorServeController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            ServeTheCat();
-            ThrowToTrash();
-            GetTheFood();
-            BuyTable();
+            MainAction();
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            InstantCook();
+            SecondaryAction();
+
         }
     }
 }

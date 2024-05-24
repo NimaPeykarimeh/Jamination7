@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        Application.targetFrameRate = 120;
         totalScoreText.SetText("Score: 0");
     }
     public void CreatePointText(TextMeshProUGUI catScoreText, float fillAmount)

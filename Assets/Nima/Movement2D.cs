@@ -13,6 +13,8 @@ public class Movement2D : MonoBehaviour
     [SerializeField] FoodManager foodManager;
 
     [SerializeField] Movement2D.MovingType movingType;
+    [SerializeField] Platform platform;
+    [SerializeField] FloatingJoystick joystick;
     [Header("Speed Values")]
     [Range(1, 15)]
     [SerializeField] float movementSpeed = 5f;
@@ -49,6 +51,12 @@ public class Movement2D : MonoBehaviour
     {
         TopDown,
         Platformer
+    }
+
+    public enum Platform
+    {
+        Mobile,
+        PC
     }
     private void Awake()
     {
@@ -187,9 +195,16 @@ public class Movement2D : MonoBehaviour
 
     void GetTopDownInput()
     {
-        input.x = Input.GetAxisRaw("Horizontal");
-        input.y = Input.GetAxisRaw("Vertical");
-        input = input.normalized;
+        if (platform == Platform.PC)
+        {
+            input.x = Input.GetAxisRaw("Horizontal");
+            input.y = Input.GetAxisRaw("Vertical");
+            input = input.normalized;
+        }
+        else if(platform == Platform.Mobile)
+        {
+            input = joystick.Direction.normalized;
+        }
     }
 
     void UpdateTopDownSpeed()
